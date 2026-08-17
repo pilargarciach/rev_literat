@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estrategias de Búsqueda de Literatura Académica</title>
+<style>
+:root {
+  --lila-principal: #8E24AA;
+  --lila-suave: #F3E5F5;
+  --lila-hover: #7B1FA2;
+  --gris-fondo: #F5F7FA;
+  --gris-tarjeta: #FFFFFF;
+  --gris-texto: #37474F;
+  --gris-borde: #CFD8DC;
+  --azul-claro: #00E5FF;
+  --azul-resalte: #0288D1;
+  --azul-suave: #E0F7FA;
+  --verde-ok: #2E7D32;
+  --verde-suave: #E8F5E9;
+  --rojo-error: #C62828;
+  --rojo-suave: #FFEBEE;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--gris-fondo);
+  color: var(--gris-texto);
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background: linear-gradient(135deg, var(--lila-principal), #4A148C);
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+header p {
+  margin-top: 0.5rem;
+  color: var(--azul-suave);
+  font-size: 0.95rem;
+}
+
+.container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.admin-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.btn-admin {
+  background-color: #ECEFF1;
+  border: 1px solid var(--gris-borde);
+  color: #546E7A;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.btn-admin:hover {
+  background-color: #CFD8DC;
+}
+
+.tab-nav {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--gris-borde);
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--gris-texto);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.tab-btn.active {
+  color: var(--lila-principal);
+  border-bottom: 3px solid var(--lila-principal);
+  background-color: var(--lila-suave);
+  border-radius: 6px 6px 0 0;
+}
+
+.activity-card {
+  display: none;
+  background: var(--gris-tarjeta);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+  border: 1px solid var(--gris-borde);
+}
+
+.activity-card.active {
+  display: block;
+}
+
+h2 {
+  color: var(--lila-principal);
+  font-size: 1.3rem;
+  margin-top: 0;
+}
+
+.question-title {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  background-color: var(--azul-suave);
+  padding: 12px 16px;
+  border-left: 5px solid var(--azul-resalte);
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+}
+
+textarea, input[type="text"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--gris-borde);
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+textarea:focus, input[type="text"]:focus {
+  outline: none;
+  border-color: var(--lila-principal);
+  box-shadow: 0 0 0 3px var(--lila-suave);
+}
+
+.btn-submit {
+  background-color: var(--lila-principal);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-submit:hover {
+  background-color: var(--lila-hover);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--lila-principal);
+  border: 1px solid var(--lila-principal);
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.btn-secondary:hover {
+  background-color: var(--lila-suave);
+}
+
+.wordcloud-container {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: var(--gris-fondo);
+  border-radius: 8px;
+  min-height: 180px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.cloud-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background-color: var(--lila-suave);
+  color: var(--lila-principal);
+  font-weight: bold;
+  transition: transform 0.2s;
+}
+
+.cloud-tag:hover {
+  transform: scale(1.08);
+}
+
+.sortable-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sortable-item {
+  background: white;
+  border: 1px solid var(--gris-borde);
+  padding: 12px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: grab;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.sortable-item:active {
+  cursor: grabbing;
+}
+
+.sortable-item.dragging {
+  opacity: 0.5;
+}
+
+.sortable-item.correct {
+  border-color: var(--verde-ok);
+  background-color: var(--verde-suave);
+}
+
+.sortable-item.incorrect {
+  border-color: var(--rojo-error);
+  background-color: var(--rojo-suave);
+}
+
+.step-num {
+  background-color: var(--azul-suave);
+  color: var(--azul-resalte);
+  font-weight: bold;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+#status-act3 {
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+.status-ok { color: var(--verde-ok); }
+.status-bad { color: var(--rojo-error); }
+
+footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  font-size: 0.85rem;
+  color: #78909C;
+  border-top: 1px solid var(--gris-borde);
+  margin-top: 3rem;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Taller Virtual: Estrategias de Búsqueda Académica</h1>
+  <p>De la pregunta a la evidencia · Lens.org y bibliometría para revisar la literatura</p>
+</header>
+
+<div class="container">
+
+  <div class="admin-bar">
+    <button class="btn-admin" onclick="resetAll()">Reiniciar actividades</button>
+  </div>
+
+  <div class="tab-nav">
+    <button class="tab-btn active" data-tab="act1" onclick="showTab('act1')">Actividad 1 · Activación</button>
+    <button class="tab-btn" data-tab="act2" onclick="showTab('act2')">Actividad 2 · Fuentes</button>
+    <button class="tab-btn" data-tab="act3" onclick="showTab('act3')">Actividad 3 · Ordenar los pasos</button>
+  </div>
+
+  <!-- ACTIVIDAD 1 -->
+  <div id="act1" class="activity-card active">
+    <h2>¿De dónde viene la materia prima?</h2>
+    <p class="question-title">¿Qué bases de datos usan hoy para buscar literatura? (Scopus, Web of Science, Lens.org, OpenAlex, Dimensions, Google Scholar, etc.)</p>
+    <input type="text" id="input-act1" placeholder="Escribe una base de datos y presiona Enviar" onkeydown="if(event.key==='Enter'){event.preventDefault(); addTag('act1');}">
+    <button class="btn-submit" onclick="addTag('act1')">Enviar</button>
+    <h3>Respuestas del grupo:</h3>
+    <div id="cloud-act1" class="wordcloud-container">
+      <em>Las respuestas aparecerán aquí...</em>
+    </div>
+  </div>
+
+  <!-- ACTIVIDAD 2 -->
+  <div id="act2" class="activity-card">
+    <h2>¿Dónde vive el conocimiento académico?</h2>
+    <p class="question-title">¿Qué formatos o fuentes usan más al escribir su tesis? (artículos, tesis, capítulos y libros, ponencias, preprints, patentes)</p>
+    <input type="text" id="input-act2" placeholder="Escribe una fuente y presiona Enviar" onkeydown="if(event.key==='Enter'){event.preventDefault(); addTag('act2');}">
+    <button class="btn-submit" onclick="addTag('act2')">Enviar</button>
+    <h3>Nube de fuentes utilizadas:</h3>
+    <div id="cloud-act2" class="wordcloud-container">
+      <em>Las fuentes registradas se agruparán en esta nube...</em>
+    </div>
+  </div>
+
+  <!-- ACTIVIDAD 3 -->
+  <div id="act3" class="activity-card">
+    <h2>Primero la pregunta, después la herramienta</h2>
+    <p class="question-title">Arrastra los pasos para ordenarlos correctamente. El último paso debe ser la búsqueda en la base de datos.</p>
+    <ul id="sortable-act3" class="sortable-list"></ul>
+    <button class="btn-submit" onclick="checkOrder()">Confirmar orden</button>
+    <button class="btn-secondary" onclick="renderSortable()">Mezclar de nuevo</button>
+    <div id="status-act3"></div>
+  </div>
+
+</div>
+
+<footer>
+  Taller Lens.org y bibliometría · María del Pilar García-Chitiva, Ph.D. · Febrero de 2026
+</footer>
+
+<script>
+// ---------- Navegación de pestañas ----------
+function showTab(tabId) {
+  document.querySelectorAll('.activity-card').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  document.querySelector('.tab-btn[data-tab="' + tabId + '"]').classList.add('active');
+}
+
+// ---------- Actividades 1 y 2: nube de palabras ----------
+function addTag(activityId) {
+  const input = document.getElementById('input-' + activityId);
+  const value = input.value.trim();
+  if (!value) return;
+
+  const cloud = document.getElementById('cloud-' + activityId);
+  const placeholder = cloud.querySelector('em');
+  if (placeholder) placeholder.remove();
+
+  const tag = document.createElement('span');
+  tag.className = 'cloud-tag';
+  tag.textContent = value;
+  cloud.appendChild(tag);
+
+  input.value = '';
+  input.focus();
+}
+
+// ---------- Actividad 3: ordenar los pasos ----------
+const correctSteps = [
+  "Reconocer los formatos del conocimiento académico",
+  "Conocer el panorama de bases de datos (abiertas vs. comerciales)",
+  "Partir de una idea de investigación clara (tema → idea → problema → pregunta)",
+  "Formular el problema: población, fenómeno, proceso y tarea",
+  "Traducir el problema en una pregunta de investigación",
+  "Construir las palabras clave y sus sinónimos (ES/EN)",
+  "Aplicar los operadores booleanos (AND, OR, NOT)",
+  "Ensamblar el query completo (comillas, paréntesis, campos)",
+  "Elegir la fuente y la estrategia de exploración (Árbol o Bosque)",
+  "Ejecutar la búsqueda en la base de datos"
+];
+
+function shuffle(array) {
+  const arr = array.slice();
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+let draggedItem = null;
+
+function renderSortable() {
+  const list = document.getElementById('sortable-act3');
+  list.innerHTML = '';
+  document.getElementById('status-act3').textContent = '';
+
+  const shuffled = shuffle(correctSteps);
+  shuffled.forEach((step) => {
+    const li = document.createElement('li');
+    li.className = 'sortable-item';
+    li.draggable = true;
+    li.dataset.step = step;
+
+    const num = document.createElement('span');
+    num.className = 'step-num';
+    num.textContent = '⠿';
+
+    const text = document.createElement('span');
+    text.textContent = step;
+
+    li.appendChild(num);
+    li.appendChild(text);
+    list.appendChild(li);
+
+    li.addEventListener('dragstart', () => {
+      draggedItem = li;
+      setTimeout(() => li.classList.add('dragging'), 0);
+    });
+    li.addEventListener('dragend', () => {
+      li.classList.remove('dragging');
+      draggedItem = null;
+    });
+  });
+
+  list.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    const afterElement = getDragAfterElement(list, e.clientY);
+    if (!draggedItem) return;
+    if (afterElement == null) {
+      list.appendChild(draggedItem);
+    } else {
+      list.insertBefore(draggedItem, afterElement);
+    }
+  });
+}
+
+function getDragAfterElement(container, y) {
+  const items = [...container.querySelectorAll('.sortable-item:not(.dragging)')];
+  return items.reduce((closest, child) => {
+    const box = child.getBoundingClientRect();
+    const offset = y - box.top - box.height / 2;
+    if (offset < 0 && offset > closest.offset) {
+      return { offset: offset, element: child };
+    } else {
+      return closest;
+    }
+  }, { offset: Number.NEGATIVE_INFINITY }).element;
+}
+
+function checkOrder() {
+  const items = document.querySelectorAll('#sortable-act3 .sortable-item');
+  let correctCount = 0;
+
+  items.forEach((li, index) => {
+    li.classList.remove('correct', 'incorrect');
+    if (li.dataset.step === correctSteps[index]) {
+      li.classList.add('correct');
+      correctCount++;
+    } else {
+      li.classList.add('incorrect');
+    }
+  });
+
+  const status = document.getElementById('status-act3');
+  if (correctCount === correctSteps.length) {
+    status.textContent = '¡Orden correcto! Así se llega, con método, hasta la búsqueda en la base de datos.';
+    status.className = 'status-ok';
+  } else {
+    status.textContent = correctCount + ' de ' + correctSteps.length + ' pasos en la posición correcta. Ajusta el orden e inténtalo de nuevo.';
+    status.className = 'status-bad';
+  }
+}
+
+// ---------- Reiniciar ----------
+function resetAll() {
+  ['act1', 'act2'].forEach(id => {
+    const cloud = document.getElementById('cloud-' + id);
+    cloud.innerHTML = '<em>' + (id === 'act1' ? 'Las respuestas aparecerán aquí...' : 'Las fuentes registradas se agruparán en esta nube...') + '</em>';
+  });
+  renderSortable();
+  showTab('act1');
+}
+
+// ---------- Inicializar ----------
+renderSortable();
+</script>
+
+</body>
+</html>
