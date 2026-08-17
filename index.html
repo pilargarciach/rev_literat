@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Estrategias de Búsqueda de Literatura Académica</title>
+<title>Taller Virtual: Estrategias de Búsqueda Académica</title>
 <style>
 :root {
   --lila-principal: #8E24AA;
@@ -38,6 +38,7 @@ header {
   padding: 2rem 1rem;
   text-align: center;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  position: relative;
 }
 
 header h1 {
@@ -51,6 +52,24 @@ header p {
   font-size: 0.95rem;
 }
 
+.admin-toggle {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.4);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.admin-toggle:hover {
+  opacity: 1;
+}
+
 .container {
   max-width: 900px;
   margin: 2rem auto;
@@ -58,9 +77,23 @@ header p {
 }
 
 .admin-bar {
-  display: flex;
   justify-content: flex-end;
   margin-bottom: 1rem;
+  display: none;
+}
+
+.admin-bar.visible {
+  display: flex;
+}
+
+.admin-badge {
+  background-color: var(--lila-suave);
+  color: var(--lila-principal);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: auto;
 }
 
 .btn-admin {
@@ -181,8 +214,24 @@ textarea:focus, input[type="text"]:focus {
   background-color: var(--lila-suave);
 }
 
+.confirm-msg {
+  font-size: 0.9rem;
+  color: var(--verde-ok);
+  font-weight: 600;
+  min-height: 1.2em;
+  margin-bottom: 1rem;
+}
+
+.cloud-wrapper {
+  display: none;
+}
+
+.cloud-wrapper.visible {
+  display: block;
+}
+
 .wordcloud-container {
-  margin-top: 2rem;
+  margin-top: 1rem;
   padding: 1.5rem;
   background: var(--gris-fondo);
   border-radius: 8px;
@@ -279,13 +328,15 @@ footer {
 <body>
 
 <header>
+  <button class="admin-toggle" id="admin-toggle" onclick="enableAdminMode()">Acceso conductora</button>
   <h1>Taller Virtual: Estrategias de Búsqueda Académica</h1>
   <p>De la pregunta a la evidencia · Lens.org y bibliometría para revisar la literatura</p>
 </header>
 
 <div class="container">
 
-  <div class="admin-bar">
+  <div class="admin-bar" id="admin-bar">
+    <span class="admin-badge">Modo conductora activo</span>
     <button class="btn-admin" onclick="resetAll()">Reiniciar actividades</button>
   </div>
 
@@ -301,9 +352,13 @@ footer {
     <p class="question-title">¿Qué bases de datos usan hoy para buscar literatura? (Scopus, Web of Science, Lens.org, OpenAlex, Dimensions, Google Scholar, etc.)</p>
     <input type="text" id="input-act1" placeholder="Escribe una base de datos y presiona Enviar" onkeydown="if(event.key==='Enter'){event.preventDefault(); addTag('act1');}">
     <button class="btn-submit" onclick="addTag('act1')">Enviar</button>
-    <h3>Respuestas del grupo:</h3>
-    <div id="cloud-act1" class="wordcloud-container">
-      <em>Las respuestas aparecerán aquí...</em>
+    <p class="confirm-msg" id="confirm-act1"></p>
+
+    <div class="cloud-wrapper" id="wrapper-act1">
+      <h3>Respuestas del grupo:</h3>
+      <div id="cloud-act1" class="wordcloud-container">
+        <em>Las respuestas aparecerán aquí...</em>
+      </div>
     </div>
   </div>
 
@@ -313,9 +368,13 @@ footer {
     <p class="question-title">¿Qué formatos o fuentes usan más al escribir su tesis? (artículos, tesis, capítulos y libros, ponencias, preprints, patentes)</p>
     <input type="text" id="input-act2" placeholder="Escribe una fuente y presiona Enviar" onkeydown="if(event.key==='Enter'){event.preventDefault(); addTag('act2');}">
     <button class="btn-submit" onclick="addTag('act2')">Enviar</button>
-    <h3>Nube de fuentes utilizadas:</h3>
-    <div id="cloud-act2" class="wordcloud-container">
-      <em>Las fuentes registradas se agruparán en esta nube...</em>
+    <p class="confirm-msg" id="confirm-act2"></p>
+
+    <div class="cloud-wrapper" id="wrapper-act2">
+      <h3>Nube de fuentes utilizadas:</h3>
+      <div id="cloud-act2" class="wordcloud-container">
+        <em>Las fuentes registradas se agruparán en esta nube...</em>
+      </div>
     </div>
   </div>
 
@@ -336,6 +395,25 @@ footer {
 </footer>
 
 <script>
+// ---------- Modo conductora ----------
+const ADMIN_PIN = '2026';
+let adminMode = false;
+
+function enableAdminMode() {
+  if (adminMode) return;
+  const pin = prompt('PIN de conductora:');
+  if (pin === null) return;
+  if (pin === ADMIN_PIN) {
+    adminMode = true;
+    document.getElementById('admin-bar').classList.add('visible');
+    document.getElementById('wrapper-act1').classList.add('visible');
+    document.getElementById('wrapper-act2').classList.add('visible');
+    document.getElementById('admin-toggle').style.display = 'none';
+  } else {
+    alert('PIN incorrecto.');
+  }
+}
+
 // ---------- Navegación de pestañas ----------
 function showTab(tabId) {
   document.querySelectorAll('.activity-card').forEach(c => c.classList.remove('active'));
@@ -361,6 +439,10 @@ function addTag(activityId) {
 
   input.value = '';
   input.focus();
+
+  const confirm = document.getElementById('confirm-' + activityId);
+  confirm.textContent = '✓ ¡Respuesta registrada! Gracias.';
+  setTimeout(() => { confirm.textContent = ''; }, 3000);
 }
 
 // ---------- Actividad 3: ordenar los pasos ----------
@@ -470,7 +552,7 @@ function checkOrder() {
   }
 }
 
-// ---------- Reiniciar ----------
+// ---------- Reiniciar (solo conductora) ----------
 function resetAll() {
   ['act1', 'act2'].forEach(id => {
     const cloud = document.getElementById('cloud-' + id);
