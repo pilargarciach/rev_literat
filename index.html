@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Estrategias de Búsqueda de Literatura Académica</title>
+<title>Taller Virtual: Estrategias de Búsqueda Académica</title>
 <style>
 :root {
   --lila-principal: #8E24AA;
@@ -20,6 +20,8 @@
   --verde-suave: #E8F5E9;
   --rojo-error: #C62828;
   --rojo-suave: #FFEBEE;
+  --naranja: #EF6C00;
+  --naranja-suave: #FFF3E0;
 }
 
 * { box-sizing: border-box; }
@@ -41,16 +43,8 @@ header {
   position: relative;
 }
 
-header h1 {
-  margin: 0;
-  font-size: 1.8rem;
-}
-
-header p {
-  margin-top: 0.5rem;
-  color: var(--azul-suave);
-  font-size: 0.95rem;
-}
+header h1 { margin: 0; font-size: 1.8rem; }
+header p { margin-top: 0.5rem; color: var(--azul-suave); font-size: 0.95rem; }
 
 .admin-toggle {
   position: absolute;
@@ -65,26 +59,18 @@ header p {
   font-size: 0.75rem;
   opacity: 0.7;
 }
+.admin-toggle:hover { opacity: 1; }
 
-.admin-toggle:hover {
-  opacity: 1;
-}
-
-.container {
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 0 1rem;
-}
+.container { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
 
 .admin-bar {
   justify-content: flex-end;
+  align-items: center;
   margin-bottom: 1rem;
   display: none;
+  gap: 10px;
 }
-
-.admin-bar.visible {
-  display: flex;
-}
+.admin-bar.visible { display: flex; }
 
 .admin-badge {
   background-color: var(--lila-suave);
@@ -105,10 +91,9 @@ header p {
   cursor: pointer;
   font-size: 0.85rem;
 }
-
-.btn-admin:hover {
-  background-color: #CFD8DC;
-}
+.btn-admin:hover { background-color: #CFD8DC; }
+.btn-admin.danger { color: var(--rojo-error); border-color: var(--rojo-error); }
+.btn-admin.danger:hover { background-color: var(--rojo-suave); }
 
 .tab-nav {
   display: flex;
@@ -129,7 +114,6 @@ header p {
   border-bottom: 3px solid transparent;
   transition: all 0.2s ease;
 }
-
 .tab-btn.active {
   color: var(--lila-principal);
   border-bottom: 3px solid var(--lila-principal);
@@ -145,16 +129,9 @@ header p {
   box-shadow: 0 4px 16px rgba(0,0,0,0.05);
   border: 1px solid var(--gris-borde);
 }
+.activity-card.active { display: block; }
 
-.activity-card.active {
-  display: block;
-}
-
-h2 {
-  color: var(--lila-principal);
-  font-size: 1.3rem;
-  margin-top: 0;
-}
+h2 { color: var(--lila-principal); font-size: 1.3rem; margin-top: 0; }
 
 .question-title {
   font-size: 1.1rem;
@@ -175,7 +152,6 @@ textarea, input[type="text"] {
   font-size: 1rem;
   margin-bottom: 1rem;
 }
-
 textarea:focus, input[type="text"]:focus {
   outline: none;
   border-color: var(--lila-principal);
@@ -193,10 +169,8 @@ textarea:focus, input[type="text"]:focus {
   cursor: pointer;
   transition: background-color 0.2s;
 }
-
-.btn-submit:hover {
-  background-color: var(--lila-hover);
-}
+.btn-submit:hover { background-color: var(--lila-hover); }
+.btn-submit:disabled { background-color: #B39DDB; cursor: not-allowed; }
 
 .btn-secondary {
   background-color: transparent;
@@ -209,10 +183,7 @@ textarea:focus, input[type="text"]:focus {
   cursor: pointer;
   margin-left: 10px;
 }
-
-.btn-secondary:hover {
-  background-color: var(--lila-suave);
-}
+.btn-secondary:hover { background-color: var(--lila-suave); }
 
 .confirm-msg {
   font-size: 0.9rem;
@@ -222,13 +193,8 @@ textarea:focus, input[type="text"]:focus {
   margin-bottom: 1rem;
 }
 
-.cloud-wrapper {
-  display: none;
-}
-
-.cloud-wrapper.visible {
-  display: block;
-}
+.cloud-wrapper { display: none; }
+.cloud-wrapper.visible { display: block; }
 
 .wordcloud-container {
   margin-top: 1rem;
@@ -252,16 +218,9 @@ textarea:focus, input[type="text"]:focus {
   font-weight: bold;
   transition: transform 0.2s;
 }
+.cloud-tag:hover { transform: scale(1.08); }
 
-.cloud-tag:hover {
-  transform: scale(1.08);
-}
-
-.sortable-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
+.sortable-list { list-style: none; padding: 0; margin: 0; }
 
 .sortable-item {
   background: white;
@@ -275,24 +234,10 @@ textarea:focus, input[type="text"]:focus {
   cursor: grab;
   transition: background-color 0.2s, border-color 0.2s;
 }
-
-.sortable-item:active {
-  cursor: grabbing;
-}
-
-.sortable-item.dragging {
-  opacity: 0.5;
-}
-
-.sortable-item.correct {
-  border-color: var(--verde-ok);
-  background-color: var(--verde-suave);
-}
-
-.sortable-item.incorrect {
-  border-color: var(--rojo-error);
-  background-color: var(--rojo-suave);
-}
+.sortable-item:active { cursor: grabbing; }
+.sortable-item.dragging { opacity: 0.5; }
+.sortable-item.correct { border-color: var(--verde-ok); background-color: var(--verde-suave); }
+.sortable-item.incorrect { border-color: var(--rojo-error); background-color: var(--rojo-suave); }
 
 .step-num {
   background-color: var(--azul-suave);
@@ -307,13 +252,37 @@ textarea:focus, input[type="text"]:focus {
   flex-shrink: 0;
 }
 
-#status-act3 {
-  margin-top: 1rem;
-  font-weight: bold;
-}
-
+#status-act3 { margin-top: 1rem; font-weight: bold; }
 .status-ok { color: var(--verde-ok); }
 .status-bad { color: var(--rojo-error); }
+
+.stats-wrapper { display: none; margin-top: 2rem; }
+.stats-wrapper.visible { display: block; }
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 1rem;
+}
+
+.stat-card {
+  border-radius: 10px;
+  padding: 1rem;
+  text-align: center;
+  border: 1px solid var(--gris-borde);
+}
+.stat-card .num { font-size: 2rem; font-weight: 800; display: block; }
+.stat-card .label { font-size: 0.85rem; }
+
+.stat-ok { background: var(--verde-suave); }
+.stat-ok .num, .stat-ok .label { color: var(--verde-ok); }
+
+.stat-bad { background: var(--rojo-suave); }
+.stat-bad .num, .stat-bad .label { color: var(--rojo-error); }
+
+.stat-neutral { background: var(--naranja-suave); }
+.stat-neutral .num, .stat-neutral .label { color: var(--naranja); }
 
 footer {
   text-align: center;
@@ -323,13 +292,17 @@ footer {
   border-top: 1px solid var(--gris-borde);
   margin-top: 3rem;
 }
+
+@media (max-width: 560px) {
+  .stats-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
 
 <header>
   <button class="admin-toggle" id="admin-toggle" onclick="enableAdminMode()">Acceso conductora</button>
-  <h1>Estrategias de Búsqueda de Literatura Académica</h1>
+  <h1>Taller Virtual: Estrategias de Búsqueda Académica</h1>
   <p>De la pregunta a la evidencia · Lens.org y bibliometría para revisar la literatura</p>
 </header>
 
@@ -337,7 +310,7 @@ footer {
 
   <div class="admin-bar" id="admin-bar">
     <span class="admin-badge">Modo conductora activo</span>
-    <button class="btn-admin" onclick="resetAll()">Reiniciar actividades</button>
+    <button class="btn-admin danger" onclick="resetAll()">Reiniciar actividades</button>
   </div>
 
   <div class="tab-nav">
@@ -355,10 +328,8 @@ footer {
     <p class="confirm-msg" id="confirm-act1"></p>
 
     <div class="cloud-wrapper" id="wrapper-act1">
-      <h3>Respuestas del grupo:</h3>
-      <div id="cloud-act1" class="wordcloud-container">
-        <em>Las respuestas aparecerán aquí...</em>
-      </div>
+      <h3>Respuestas del grupo (en vivo):</h3>
+      <div id="cloud-act1" class="wordcloud-container"><em>Esperando respuestas...</em></div>
     </div>
   </div>
 
@@ -371,10 +342,8 @@ footer {
     <p class="confirm-msg" id="confirm-act2"></p>
 
     <div class="cloud-wrapper" id="wrapper-act2">
-      <h3>Nube de fuentes utilizadas:</h3>
-      <div id="cloud-act2" class="wordcloud-container">
-        <em>Las fuentes registradas se agruparán en esta nube...</em>
-      </div>
+      <h3>Nube de fuentes utilizadas (en vivo):</h3>
+      <div id="cloud-act2" class="wordcloud-container"><em>Esperando respuestas...</em></div>
     </div>
   </div>
 
@@ -383,9 +352,27 @@ footer {
     <h2>Primero la pregunta, después la herramienta</h2>
     <p class="question-title">Arrastra los pasos para ordenarlos correctamente. El último paso debe ser la búsqueda en la base de datos.</p>
     <ul id="sortable-act3" class="sortable-list"></ul>
-    <button class="btn-submit" onclick="checkOrder()">Confirmar orden</button>
+    <button class="btn-submit" id="btn-confirmar-act3" onclick="checkOrder()">Confirmar orden</button>
     <button class="btn-secondary" onclick="renderSortable()">Mezclar de nuevo</button>
     <div id="status-act3"></div>
+
+    <div class="stats-wrapper" id="stats-wrapper-act3">
+      <h3>Resultados del grupo (en vivo):</h3>
+      <div class="stats-grid">
+        <div class="stat-card stat-ok">
+          <span class="num" id="stat-correctos">0</span>
+          <span class="label">Ordenaron bien</span>
+        </div>
+        <div class="stat-card stat-bad">
+          <span class="num" id="stat-incorrectos">0</span>
+          <span class="label">Lo intentaron, mal orden</span>
+        </div>
+        <div class="stat-card stat-neutral">
+          <span class="num" id="stat-sinparticipar">0</span>
+          <span class="label">No participaron</span>
+        </div>
+      </div>
+    </div>
   </div>
 
 </div>
@@ -394,56 +381,87 @@ footer {
   Taller Lens.org y bibliometría · María del Pilar García-Chitiva, Ph.D. · Febrero de 2026
 </footer>
 
-<script>
-// ---------- Modo conductora ----------
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getFirestore, collection, addDoc, doc, setDoc, deleteDoc,
+  onSnapshot, serverTimestamp, getDocs, writeBatch
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// ============================================================
+// 1) PEGA AQUÍ TU CONFIGURACIÓN DE FIREBASE
+//    (Firebase Console → ícono engranaje → Project settings →
+//     General → Your apps → app web → "Config")
+// ============================================================
+const firebaseConfig = {
+  apiKey: "TU_API_KEY",
+  authDomain: "TU_PROYECTO.firebaseapp.com",
+  projectId: "TU_PROYECTO",
+  storageBucket: "TU_PROYECTO.appspot.com",
+  messagingSenderId: "TU_SENDER_ID",
+  appId: "TU_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// ============================================================
+// PIN de conductora (cámbialo si quieres)
+// ============================================================
 const ADMIN_PIN = '2026';
 let adminMode = false;
 
-function enableAdminMode() {
-  if (adminMode) return;
-  const pin = prompt('PIN de conductora:');
-  if (pin === null) return;
-  if (pin === ADMIN_PIN) {
-    adminMode = true;
-    document.getElementById('admin-bar').classList.add('visible');
-    document.getElementById('wrapper-act1').classList.add('visible');
-    document.getElementById('wrapper-act2').classList.add('visible');
-    document.getElementById('admin-toggle').style.display = 'none';
-  } else {
-    alert('PIN incorrecto.');
+// ---------- Identidad anónima de sesión (por navegador) ----------
+function getSessionId() {
+  let id = sessionStorage.getItem('tallerSessionId');
+  if (!id) {
+    id = 'u-' + Date.now() + '-' + Math.random().toString(36).slice(2, 10);
+    sessionStorage.setItem('tallerSessionId', id);
   }
+  return id;
 }
+const sessionId = getSessionId();
+
+// Registrar que esta sesión abrió el taller (para saber cuántos "no hicieron nada")
+setDoc(doc(db, 'sesiones', sessionId), { inicio: serverTimestamp() }, { merge: true }).catch(console.error);
 
 // ---------- Navegación de pestañas ----------
-function showTab(tabId) {
+window.showTab = function(tabId) {
   document.querySelectorAll('.activity-card').forEach(c => c.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById(tabId).classList.add('active');
   document.querySelector('.tab-btn[data-tab="' + tabId + '"]').classList.add('active');
-}
+};
 
-// ---------- Actividades 1 y 2: nube de palabras ----------
-function addTag(activityId) {
+// ---------- Actividades 1 y 2: enviar respuesta a Firestore ----------
+window.addTag = async function(activityId) {
   const input = document.getElementById('input-' + activityId);
   const value = input.value.trim();
   if (!value) return;
 
-  const cloud = document.getElementById('cloud-' + activityId);
-  const placeholder = cloud.querySelector('em');
-  if (placeholder) placeholder.remove();
+  const btn = input.nextElementSibling;
+  input.disabled = true;
+  if (btn) btn.disabled = true;
 
-  const tag = document.createElement('span');
-  tag.className = 'cloud-tag';
-  tag.textContent = value;
-  cloud.appendChild(tag);
-
-  input.value = '';
-  input.focus();
-
-  const confirm = document.getElementById('confirm-' + activityId);
-  confirm.textContent = '✓ ¡Respuesta registrada! Gracias.';
-  setTimeout(() => { confirm.textContent = ''; }, 3000);
-}
+  try {
+    await addDoc(collection(db, 'respuestas_' + activityId), {
+      texto: value,
+      sessionId,
+      timestamp: serverTimestamp()
+    });
+    const confirm = document.getElementById('confirm-' + activityId);
+    confirm.textContent = '✓ ¡Respuesta registrada! Gracias.';
+    setTimeout(() => { confirm.textContent = ''; }, 3000);
+    input.value = '';
+  } catch (e) {
+    console.error(e);
+    alert('No se pudo enviar la respuesta. Revisa tu conexión.');
+  } finally {
+    input.disabled = false;
+    if (btn) btn.disabled = false;
+    input.focus();
+  }
+};
 
 // ---------- Actividad 3: ordenar los pasos ----------
 const correctSteps = [
@@ -470,7 +488,7 @@ function shuffle(array) {
 
 let draggedItem = null;
 
-function renderSortable() {
+window.renderSortable = function() {
   const list = document.getElementById('sortable-act3');
   list.innerHTML = '';
   document.getElementById('status-act3').textContent = '';
@@ -507,28 +525,22 @@ function renderSortable() {
     e.preventDefault();
     const afterElement = getDragAfterElement(list, e.clientY);
     if (!draggedItem) return;
-    if (afterElement == null) {
-      list.appendChild(draggedItem);
-    } else {
-      list.insertBefore(draggedItem, afterElement);
-    }
+    if (afterElement == null) list.appendChild(draggedItem);
+    else list.insertBefore(draggedItem, afterElement);
   });
-}
+};
 
 function getDragAfterElement(container, y) {
   const items = [...container.querySelectorAll('.sortable-item:not(.dragging)')];
   return items.reduce((closest, child) => {
     const box = child.getBoundingClientRect();
     const offset = y - box.top - box.height / 2;
-    if (offset < 0 && offset > closest.offset) {
-      return { offset: offset, element: child };
-    } else {
-      return closest;
-    }
+    if (offset < 0 && offset > closest.offset) return { offset, element: child };
+    return closest;
   }, { offset: Number.NEGATIVE_INFINITY }).element;
 }
 
-function checkOrder() {
+window.checkOrder = async function() {
   const items = document.querySelectorAll('#sortable-act3 .sortable-item');
   let correctCount = 0;
 
@@ -550,17 +562,110 @@ function checkOrder() {
     status.textContent = correctCount + ' de ' + correctSteps.length + ' pasos en la posición correcta. Ajusta el orden e inténtalo de nuevo.';
     status.className = 'status-bad';
   }
+
+  try {
+    await setDoc(doc(db, 'resultados_act3', sessionId), {
+      correctCount,
+      total: correctSteps.length,
+      timestamp: serverTimestamp()
+    });
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+// ---------- Modo conductora ----------
+let unsubCloud1 = null, unsubCloud2 = null, unsubResultados = null, unsubSesiones = null;
+let totalSesiones = 0, resultadosMap = new Map();
+
+window.enableAdminMode = function() {
+  if (adminMode) return;
+  const pin = prompt('PIN de conductora:');
+  if (pin === null) return;
+  if (pin !== ADMIN_PIN) { alert('PIN incorrecto.'); return; }
+
+  adminMode = true;
+  document.getElementById('admin-bar').classList.add('visible');
+  document.getElementById('wrapper-act1').classList.add('visible');
+  document.getElementById('wrapper-act2').classList.add('visible');
+  document.getElementById('stats-wrapper-act3').classList.add('visible');
+  document.getElementById('admin-toggle').style.display = 'none';
+
+  startListeners();
+};
+
+function renderCloud(containerId, docs) {
+  const cloud = document.getElementById(containerId);
+  cloud.innerHTML = '';
+  if (docs.length === 0) {
+    cloud.innerHTML = '<em>Esperando respuestas...</em>';
+    return;
+  }
+  docs.forEach(d => {
+    const tag = document.createElement('span');
+    tag.className = 'cloud-tag';
+    tag.textContent = d.texto;
+    cloud.appendChild(tag);
+  });
 }
 
-// ---------- Reiniciar (solo conductora) ----------
-function resetAll() {
-  ['act1', 'act2'].forEach(id => {
-    const cloud = document.getElementById('cloud-' + id);
-    cloud.innerHTML = '<em>' + (id === 'act1' ? 'Las respuestas aparecerán aquí...' : 'Las fuentes registradas se agruparán en esta nube...') + '</em>';
+function updateStats() {
+  let correctos = 0, incorrectos = 0;
+  resultadosMap.forEach(r => {
+    if (r.correctCount === r.total) correctos++;
+    else incorrectos++;
   });
+  const sinParticipar = Math.max(0, totalSesiones - resultadosMap.size);
+
+  document.getElementById('stat-correctos').textContent = correctos;
+  document.getElementById('stat-incorrectos').textContent = incorrectos;
+  document.getElementById('stat-sinparticipar').textContent = sinParticipar;
+}
+
+function startListeners() {
+  unsubCloud1 = onSnapshot(collection(db, 'respuestas_act1'), (snap) => {
+    const docs = snap.docs.map(d => d.data());
+    renderCloud('cloud-act1', docs);
+  });
+
+  unsubCloud2 = onSnapshot(collection(db, 'respuestas_act2'), (snap) => {
+    const docs = snap.docs.map(d => d.data());
+    renderCloud('cloud-act2', docs);
+  });
+
+  unsubResultados = onSnapshot(collection(db, 'resultados_act3'), (snap) => {
+    resultadosMap = new Map();
+    snap.docs.forEach(d => resultadosMap.set(d.id, d.data()));
+    updateStats();
+  });
+
+  unsubSesiones = onSnapshot(collection(db, 'sesiones'), (snap) => {
+    totalSesiones = snap.size;
+    updateStats();
+  });
+}
+
+// ---------- Reiniciar (borra todo en Firestore) ----------
+window.resetAll = async function() {
+  if (!confirm('Esto borrará TODAS las respuestas de todos los participantes. ¿Continuar?')) return;
+
+  const collections = ['respuestas_act1', 'respuestas_act2', 'resultados_act3', 'sesiones'];
+  try {
+    for (const colName of collections) {
+      const snap = await getDocs(collection(db, colName));
+      const batch = writeBatch(db);
+      snap.docs.forEach(d => batch.delete(d.ref));
+      await batch.commit();
+    }
+    alert('Actividades reiniciadas.');
+  } catch (e) {
+    console.error(e);
+    alert('Hubo un error al reiniciar. Revisa la consola.');
+  }
+
   renderSortable();
   showTab('act1');
-}
+};
 
 // ---------- Inicializar ----------
 renderSortable();
